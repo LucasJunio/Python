@@ -1,160 +1,100 @@
-{
- "cells": [
-  {
-   "cell_type": "code",
-   "execution_count": 10,
-   "metadata": {
-    "scrolled": false
-   },
-   "outputs": [
-    {
-     "name": "stdout",
-     "output_type": "stream",
-     "text": [
-      "geracao: 1\n",
-      "Population:\n",
-      "\t010011\t=> 19\n",
-      "\t111001\t=> -25\n",
-      "\t110101\t=> -21\n",
-      "\t010000\t=> 16\n",
-      "\t100110\t=> -6\n",
-      "\t001011\t=> 11\n",
-      "geracao: 2\n",
-      "Population:\n",
-      "\t010011\t=> 19\n",
-      "\t010000\t=> 16\n",
-      "\t111001\t=> -25\n",
-      "\t110101\t=> -21\n",
-      "\t100011\t=> -3\n",
-      "\t001100\t=> 12\n",
-      "geracao: 3\n",
-      "Population:\n",
-      "\t111001\t=> -25\n",
-      "\t001100\t=> 12\n",
-      "\t110101\t=> -21\n",
-      "\t010011\t=> 19\n",
-      "\t100000\t=> 0\n",
-      "\t011011\t=> 27\n",
-      "FIM!\n"
-     ]
-    }
-   ],
-   "source": [
-    "import random\n",
-    "import math\n",
-    "\n",
-    "TAM_POP = 6\n",
-    "\n",
-    "def print_pop(pop):\n",
-    "\tprint('Population:')\n",
-    "\tfor ind in pop:\n",
-    "\t\tprint('\\t' + ''.join(str(e) for e in ind) + \"\\t=> \" +str(bin_to_int(ind)))\n",
-    "\n",
-    "def gen_pop():\n",
-    "\tpop = []\n",
-    "\tfor i in range(TAM_POP):\n",
-    "\t\tcromo = []\n",
-    "\t\tfor j in range(6):\n",
-    "\t\t\tcromo.append(random.choice([0, 1]))\n",
-    "\t\tpop.append(cromo)\n",
-    "\treturn pop\n",
-    "\n",
-    "def bin_to_int(ind):\n",
-    "\tgenes = ''.join(str(e) for e in ind)\n",
-    "\tvalue = int(genes[1:], 2)\n",
-    "\tvalue = (value * -1) if genes[0] == '1' else value \n",
-    "\treturn value\n",
-    "\n",
-    "def fitness(cromo=None):\n",
-    "\tint_ = bin_to_int(cromo)\n",
-    "\treturn int(math.pow(int_, 2))\n",
-    "\n",
-    "def best_fitness(pop):\n",
-    "\tbest = 99999\n",
-    "\tfor cromo in pop:\n",
-    "\t\tf = fitness(cromo)\n",
-    "\t\tif f < best:\n",
-    "\t\t\tbest = f\n",
-    "\treturn best\n",
-    "\n",
-    "def mutacao(pop):\n",
-    "\ta = random.choice(range(6))\n",
-    "\tm = pop.pop(a)\n",
-    "\tm[a] = 1 - m[a]\n",
-    "\tpop.append(m)\n",
-    "\treturn pop\n",
-    "\n",
-    "def cruzamento(pop):\n",
-    "\ta = random.choice(range(6))\n",
-    "\tlutador = pop.pop(a)\n",
-    "\tb = random.choice(range(5))\n",
-    "\tlutador2 = pop.pop(b)\n",
-    "\t\n",
-    "\tpai = None\n",
-    "\tif fitness(lutador) < fitness(lutador2):\n",
-    "\t\t pop.append(lutador2)\n",
-    "\t\t pai = lutador\n",
-    "\telse:\n",
-    "\t\tpop.append(lutador)\n",
-    "\t\tpai = lutador2\n",
-    "\n",
-    "\n",
-    "\ta = random.choice(range(5))\n",
-    "\tlutador3 = pop.pop(a)\n",
-    "\tb = random.choice(range(4))\n",
-    "\tlutador4 = pop.pop(b)\n",
-    "\tif fitness(lutador3) < fitness(lutador4):\n",
-    "\t\t pop.append(lutador4)\n",
-    "\t\t mae = lutador3\n",
-    "\telse:\n",
-    "\t\tpop.append(lutador3)\n",
-    "\t\tmae = lutador4\n",
-    "        \n",
-    "\t# cruzando\n",
-    "\tfilho = pai[0:3] + mae[3:]\n",
-    "\tfilho2 = mae[0:3] + pai[3:]\n",
-    "\tpop.append(filho)\n",
-    "\tpop.append(filho2)\n",
-    "\treturn pop\n",
-    "\n",
-    "if __name__ == '__main__':\n",
-    "\tpopulacao = gen_pop()\n",
-    "\tbest = 99999\n",
-    "\tk = 0\n",
-    "\twhile(best != 0):\n",
-    "\t\tk += 1\n",
-    "\t\tprint('geracao: {}'.format(k))\n",
-    "\t\tprint_pop(populacao)\n",
-    "\t\tf = best_fitness(populacao)\n",
-    "\t\tif f < best:\n",
-    "\t\t\tbest = f\n",
-    "\t\t\tif best == 0:\n",
-    "\t\t\t\tprint('FIM!')\n",
-    "\t\t\t\tbreak\n",
-    "\t\tcruzamento(populacao)\n",
-    "\t\tmutacao(populacao)\t\t"
-   ]
-  }
- ],
- "metadata": {
-  "kernelspec": {
-   "display_name": "Python 3",
-   "language": "python",
-   "name": "python3"
-  },
-  "language_info": {
-   "codemirror_mode": {
-    "name": "ipython",
-    "version": 3
-   },
-   "file_extension": ".py",
-   "mimetype": "text/x-python",
-   "name": "python",
-   "nbconvert_exporter": "python",
-   "pygments_lexer": "ipython3",
-   "version": "3.7.1"
-  }
- },
- "nbformat": 4,
- "nbformat_minor": 2
-}
+#!/usr/bin/env python
+# coding: utf-8
+
+# In[10]:
+
+
+import random
+import math
+
+TAM_POP = 6
+
+def print_pop(pop):
+	print('Population:')
+	for ind in pop:
+		print('\t' + ''.join(str(e) for e in ind) + "\t=> " +str(bin_to_int(ind)))
+
+def gen_pop():
+	pop = []
+	for i in range(TAM_POP):
+		cromo = []
+		for j in range(6):
+			cromo.append(random.choice([0, 1]))
+		pop.append(cromo)
+	return pop
+
+def bin_to_int(ind):
+	genes = ''.join(str(e) for e in ind)
+	value = int(genes[1:], 2)
+	value = (value * -1) if genes[0] == '1' else value 
+	return value
+
+def fitness(cromo=None):
+	int_ = bin_to_int(cromo)
+	return int(math.pow(int_, 2))
+
+def best_fitness(pop):
+	best = 99999
+	for cromo in pop:
+		f = fitness(cromo)
+		if f < best:
+			best = f
+	return best
+
+def mutacao(pop):
+	a = random.choice(range(6))
+	m = pop.pop(a)
+	m[a] = 1 - m[a]
+	pop.append(m)
+	return pop
+
+def cruzamento(pop):
+	a = random.choice(range(6))
+	lutador = pop.pop(a)
+	b = random.choice(range(5))
+	lutador2 = pop.pop(b)
+	
+	pai = None
+	if fitness(lutador) < fitness(lutador2):
+		 pop.append(lutador2)
+		 pai = lutador
+	else:
+		pop.append(lutador)
+		pai = lutador2
+
+
+	a = random.choice(range(5))
+	lutador3 = pop.pop(a)
+	b = random.choice(range(4))
+	lutador4 = pop.pop(b)
+	if fitness(lutador3) < fitness(lutador4):
+		 pop.append(lutador4)
+		 mae = lutador3
+	else:
+		pop.append(lutador3)
+		mae = lutador4
+        
+	# cruzando
+	filho = pai[0:3] + mae[3:]
+	filho2 = mae[0:3] + pai[3:]
+	pop.append(filho)
+	pop.append(filho2)
+	return pop
+
+if __name__ == '__main__':
+	populacao = gen_pop()
+	best = 99999
+	k = 0
+	while(best != 0):
+		k += 1
+		print('geracao: {}'.format(k))
+		print_pop(populacao)
+		f = best_fitness(populacao)
+		if f < best:
+			best = f
+			if best == 0:
+				print('FIM!')
+				break
+		cruzamento(populacao)
+		mutacao(populacao)		
+
